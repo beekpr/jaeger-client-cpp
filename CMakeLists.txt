@@ -69,7 +69,9 @@ endif()
 list(APPEND package_deps thrift)
 
 
-hunter_add_package(opentracing-cpp)
+# XXX: Hunter will pull in the wrong version!
+# Disable hunter support so that we can manually provide one that matches envoy.
+#hunter_add_package(opentracing-cpp)
 # Not `${hunter_config}` because OpenTracing provides its own
 # OpenTracingConfig.cmake file
 find_package(OpenTracing CONFIG REQUIRED)
@@ -97,15 +99,15 @@ cmake_dependent_option(
   "NOT JAEGERTRACING_BUILD_CROSSDOCK" ON)
 
 if(JAEGERTRACING_WITH_YAML_CPP)
-  hunter_add_package(yaml-cpp)
+  #hunter_add_package(yaml-cpp)
   # Not `${hunter_config}` because yaml-cpp provides its own
   # yaml-cpp-config.cmake file
   find_package(yaml-cpp CONFIG REQUIRED)
-  if(HUNTER_ENABLED)
-      list(APPEND LIBS yaml-cpp::yaml-cpp)
-  else()
+  #  if(HUNTER_ENABLED)
+	  #      list(APPEND LIBS yaml-cpp::yaml-cpp)
+	  #  else()
       list(APPEND LIBS yaml-cpp)
-  endif()
+      #  endif()
   list(APPEND package_deps yaml-cpp)
 endif()
 
