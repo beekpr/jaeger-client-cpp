@@ -99,15 +99,13 @@ cmake_dependent_option(
   "NOT JAEGERTRACING_BUILD_CROSSDOCK" ON)
 
 if(JAEGERTRACING_WITH_YAML_CPP)
-  #hunter_add_package(yaml-cpp)
-  # Not `${hunter_config}` because yaml-cpp provides its own
-  # yaml-cpp-config.cmake file
+  hunter_add_package(yaml-cpp)
   find_package(yaml-cpp CONFIG REQUIRED)
-  #  if(HUNTER_ENABLED)
-	  #      list(APPEND LIBS yaml-cpp::yaml-cpp)
-	  #  else()
+  if(HUNTER_ENABLED)
+      list(APPEND LIBS yaml-cpp::yaml-cpp)
+  else()
       list(APPEND LIBS yaml-cpp)
-      #  endif()
+  endif()
   list(APPEND package_deps yaml-cpp)
 endif()
 
@@ -279,6 +277,8 @@ if(JAEGERTRACING_PLUGIN)
   target_link_libraries(jaegertracing_plugin PUBLIC
     -static-libgcc
     -static-libstdc++
+    /usr/lib/x86_64-linux-gnu/libc++.a
+    /usr/lib/x86_64-linux-gnu/libc++abi.a
     -Wl,--version-script=${CMAKE_CURRENT_BINARY_DIR}/export.map)
 endif()
 
